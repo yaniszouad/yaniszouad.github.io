@@ -44,7 +44,24 @@
     </ul>
   </div>
 <script>
-  //insert code from tutorial here
+  data={
+     "2020": [120, 120],
+     "2021": [110, 130],
+     "2022": [100, 140],
+     "2023": [90, 150]
+   }
+
+  function changeData(){
+    let year = document.getElementById("year_select").value;
+    console.log(year);
+    let newData = data[year]; //the dropdown value is used as the key
+    document.getElementById("bar1").setAttribute("height", newData[0])
+    document.getElementById("bar1").setAttribute("y", 180-newData[0])
+    document.getElementById("bar2").setAttribute("height", newData[1])
+    document.getElementById("bar2").setAttribute("y", 180-newData[1])
+
+ }//end of function changeData()
+
 </script>
 </body>
 </html>
