@@ -25,21 +25,89 @@
           stroke: #cccccc;
           stroke-width: 3;
         }
+        
       </style>
 
       <rect id="container" x="10" y="10" width="100" height="210" rx="15" />
 
       <g id="glass">
-        <rect x="45" y="20" width="30" height="160" rx="15" />
+        <rect x="45" y="20" width="30" height="160" rx="15"/>
         <ellipse cx="60" cy="180" rx="30" ry="30" />
         <rect x="46.5" y="22" width="27" height="165" rx="15" stroke="none" />
       </g>
       <g id="liquid">
-        <rect x="45" y="10" width="30" height="160" rx="15" />
+        <rect x="50" y="25" width="20" height="160" rx="10" fill = "red" stroke = "none" id="tallLiquid" class = "fluid"/>
+        <ellipse cx="60" cy="180" rx="25" ry="25" fill = "red" stroke = "none" class = "fluid"/>
+        <path d=" M 59 195 A 15 15 0 0 1 47 173" fill = "none" stroke = "white" stroke-linecap="round"/>
+        <path d=" M 51 168 A 15 15 0 0 1 57 165" fill = "none" stroke = "white" stroke-linecap="round"/>
       </g>
+      <div class="slidecontainer">
+        <input type="range" min="0" max="212" value="100" class="slider" id="myRange">
+        <p>Value: <span id="valueShower"></span></p>
+      </div>
+      <form>
+          <div>
+            <input type="radio" id="Farenheit" name="tempScale" value="F">
+            <label for="html">Farenheit</label><br>
+            <input type="radio" id="Celsius" name="tempScale" value="C">
+            <label for="css">Celsius</label><br>
+            <button type="button" onclick = "displayRadioValue()">Submit</button>
+          </div>
+      </form> 
 
     </svg>
   </div>
+  <script>
+    function convertRange(value, r1, r2) { 
+      return (value - r1[ 0 ]) * (r2[ 1 ] - r2[ 0 ]) / (r1[ 1 ] - r1[ 0 ]) + r2[ 0 ];
+    }
+
+    var slider = document.getElementById("myRange");
+    var form = document.querySelector("form")
+    var tempScale = "F" // By default Celsius, when F, Farenheit
+    var output = document.getElementById("valueShower");
+    var liquid = document.getElementById("tallLiquid")
+    var originalY = liquid.getAttribute("y")
+    var fluids = document.getElementsByClassName("fluid")
+    console.log(originalY)
+    output.innerHTML = slider.value;
+    function updateValues(){
+      if (slider.value > (slider.max*(2/3))){
+        fluids[0].setAttribute("fill", "red")
+        fluids[1].setAttribute("fill", "red")
+      }
+      else if (slider.value > (slider.max*(1/3))){
+        fluids[0].setAttribute("fill", "orange")
+        fluids[1].setAttribute("fill", "orange")
+      }
+      else if (slider.value > 0){
+        fluids[0].setAttribute("fill", "blue")
+        fluids[1].setAttribute("fill", "blue")
+      }
+    }
+    updateValues()
+    slider.oninput = function() {
+      updateValues()
+      if (tempScale == "F"){
+        output.innerHTML = this.value
+      }
+      else if (tempScale == "C"){
+        output.innerHTML = Math.floor(convertRange(this.value, [ 0, 212 ], [ 0, 100 ] ))
+      }
+      liquid.setAttribute("height", convertRange( this.value, [ 0, 212 ], [ 35, 140 ] ));
+      liquid.setAttribute("y",convertRange( this.value, [ 0, 212 ], [ 150, 25 ] ));
+      console.log(liquid.getAttribute("y"))    
+    }
+    function displayRadioValue() {
+        var ele = document.getElementsByName('tempScale');
+          
+        for(i = 0; i < ele.length; i++) {
+            if(ele[i].checked)
+            tempScale = ""
+            //document.getElementById("result").innerHTML = "Gender: "+ele[i].value;
+        }
+    }
+  </script>
 </body>
 
 </html>
