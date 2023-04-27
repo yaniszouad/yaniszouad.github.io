@@ -37,10 +37,10 @@
       </g>
       <g id="legend">
         <line x1="46" y1="140" x2="74" y2="140" stroke="black" />
-        <line x1="46" y1="130" x2="74" y2="130" stroke="black" />
+        <line x1="46" y1="130" x2="74" y2="130" stroke="black" /> <!-- 32 degrees farenheit-->
         <line x1="46" y1="120" x2="74" y2="120" stroke="black" />
 
-        <line x1="46" y1="110" x2="74" y2="110" stroke="black" />
+        <line x1="46" y1="110" x2="74" y2="110" stroke="black" /> <!-- 66 degrees farenheit-->
         <line x1="46" y1="100" x2="74" y2="100" stroke="black" />
         <line x1="46" y1="90" x2="74" y2="90" stroke="black" />
 
@@ -49,8 +49,37 @@
         <line x1="46" y1="60" x2="74" y2="60" stroke="black" />
 
         <line x1="46" y1="50" x2="74" y2="50" stroke="black" />
-        <line x1="46" y1="40" x2="74" y2="40" stroke="black" /> <!-- 32 degrees farenheit-->
+        <line x1="46" y1="40" x2="74" y2="40" stroke="black" /> 
         <line x1="47" y1="30" x2="73" y2="30" stroke="black" />
+      </g>
+      <g id="legend">
+        <line x1="46" y1="140" x2="74" y2="140" stroke="black" />
+        <text class="label" x="25" y="135" text-anchor="right" fill="white" id="C1">0</text> <!-- 0 degrees c-->
+        <text class="label" x="77" y="135" text-anchor="left" fill="white" id="F1">32</text> <!-- 32 degrees f-->
+        <line x1="46" y1="130" x2="74" y2="130" stroke="black" />
+        <line x1="46" y1="120" x2="74" y2="120" stroke="black" />
+
+        <line x1="46" y1="110" x2="74" y2="110" stroke="black" />
+        <line x1="46" y1="100" x2="74" y2="100" stroke="black" />
+        <text class="label" x="25" y="105" text-anchor="right" fill="white" id="C2">30</text> <!-- 30 degrees c-->
+        <text class="label" x="77" y="105" text-anchor="left" fill="white" id="F2">66</text> <!-- 66 degrees f-->
+        <line x1="46" y1="90" x2="74" y2="90" stroke="black" />
+
+        <line x1="46" y1="80" x2="74" y2="80" stroke="black" /> <!-- 56 degrees -->
+        <text class="label" x="25" y="85" text-anchor="right" fill="white" id="C3">57</text> <!-- 57 degrees celsius-->
+        <text class="label" x="77" y="85" text-anchor="left" fill="white" id="F3">120</text> <!-- 120 degrees celsius-->
+        <line x1="46" y1="70" x2="74" y2="70" stroke="black" />
+        <line x1="46" y1="60" x2="74" y2="60" stroke="black" />
+        <text class="label" x="25" y="65" text-anchor="right" fill="white" id="C4">67</text> <!-- 67 degrees c-->
+        <text class="label" x="77" y="65" text-anchor="left" fill="white" id="F4">152</text> <!-- 152 degrees f-->
+
+        <line x1="46" y1="50" x2="74" y2="50" stroke="black" />
+        <line x1="46" y1="40" x2="74" y2="40" stroke="black" /> 
+        <line x1="47" y1="30" x2="73" y2="30" stroke="black" />
+        
+        <line x1="49" y1="25" x2="71" y2="25" stroke="black" />
+        <text class="label" x="20 " y="30" text-anchor="right" fill="white" id="C5">100</text> <!-- 100 degrees c-->
+        <text class="label" x="77" y="30" text-anchor="left" fill="white" id="F5">212</text> <!-- 212 degrees f-->
       </g>
       <g id="liquid">
         <rect x="50" y="25" width="20" height="160" rx="10" fill = "red" stroke = "none" id="tallLiquid" class = "fluid"/>
@@ -77,18 +106,65 @@
     function convertRange(value, r1, r2) { 
       return (value - r1[ 0 ]) * (r2[ 1 ] - r2[ 0 ]) / (r1[ 1 ] - r1[ 0 ]) + r2[ 0 ];
     }
+    function farenheitToCelsius(fTemp){
+      return (fTemp - 32) * 5 / 9
+    } 
+    function updateButtons(){
+      if (button1.checked == true){
+        tempScale = "F"
+        document.getElementById("F1").setAttribute("fill", "black")
+        document.getElementById("F2").setAttribute("fill", "black")
+        document.getElementById("F3").setAttribute("fill", "black")
+        document.getElementById("F4").setAttribute("fill", "black")
+        document.getElementById("F5").setAttribute("fill", "black")
+        document.getElementById("C1").setAttribute("fill", "white")
+        document.getElementById("C2").setAttribute("fill", "white")
+        document.getElementById("C3").setAttribute("fill", "white")
+        document.getElementById("C4").setAttribute("fill", "white")
+        document.getElementById("C5").setAttribute("fill", "white")
+      }
+      if (button2.checked == true){
+        tempScale = "C"
+        document.getElementById("F1").setAttribute("fill", "white")
+        document.getElementById("F2").setAttribute("fill", "white")
+        document.getElementById("F3").setAttribute("fill", "white")
+        document.getElementById("F4").setAttribute("fill", "white")
+        document.getElementById("F5").setAttribute("fill", "white")
+        document.getElementById("C1").setAttribute("fill", "black")
+        document.getElementById("C2").setAttribute("fill", "black")
+        document.getElementById("C3").setAttribute("fill", "black")
+        document.getElementById("C4").setAttribute("fill", "black")
+        document.getElementById("C5").setAttribute("fill", "black")
+      }
+    }
     function updateValues(){
-      if (slider.value > (slider.max*(2/3))){
-        fluids[0].setAttribute("fill", "red")
-        fluids[1].setAttribute("fill", "red")
+      if (tempScale == "C"){
+        if (slider.value > (slider.max*(2/3))){
+          fluids[0].setAttribute("fill", "red")
+          fluids[1].setAttribute("fill", "red")
+        }
+        else if (farenheitToCelsius(slider.value) > 1){
+          fluids[0].setAttribute("fill", "orange")
+          fluids[1].setAttribute("fill", "orange")
+        }
+        else if (slider.value > 0){
+          fluids[0].setAttribute("fill", "blue")
+          fluids[1].setAttribute("fill", "blue")
+        }
       }
-      else if (slider.value > (slider.max*(1/3))){
-        fluids[0].setAttribute("fill", "orange")
-        fluids[1].setAttribute("fill", "orange")
-      }
-      else if (slider.value > 0){
-        fluids[0].setAttribute("fill", "blue")
-        fluids[1].setAttribute("fill", "blue")
+      else if (tempScale == "F"){
+        if (slider.value > (slider.max*(2/3))){
+          fluids[0].setAttribute("fill", "red")
+          fluids[1].setAttribute("fill", "red")
+        }
+        else if (slider.value > 32){
+          fluids[0].setAttribute("fill", "orange")
+          fluids[1].setAttribute("fill", "orange")
+        }
+        else if (slider.value > 0){
+          fluids[0].setAttribute("fill", "blue")
+          fluids[1].setAttribute("fill", "blue")
+        }
       }
     }
 
@@ -105,14 +181,6 @@
     output.innerHTML = slider.value;
     
     updateValues()
-    function updateButtons(){
-      if (button1.checked == true){
-        tempScale = "F"
-      }
-      if (button2.checked == true){
-        tempScale = "C"
-      }
-    }
     slider.oninput = function() {
       updateButtons()
       updateValues()
@@ -120,7 +188,7 @@
         output.innerHTML = this.value
       }
       else if (tempScale == "C"){
-        output.innerHTML = Math.floor(convertRange(this.value, [ 0, 212 ], [ 0, 100 ] ))
+        output.innerHTML = Math.floor(farenheitToCelsius(this.value))
       }
       liquid.setAttribute("height", convertRange( this.value, [ 0, 212 ], [ 35, 140 ] ));
       liquid.setAttribute("y",convertRange( this.value, [ 0, 212 ], [ 150, 25 ] ));
